@@ -86,7 +86,7 @@
                 <h2 class="text-2xl font-semibold text-content-light dark:text-content-dark">Panel de control</h2>
                 <p class="text-content-light/70 dark:text-content-dark/70 mt-1">Aquí tienes una visión general del rendimiento de tu asistente de WhatsApp.</p>
             </header>
-            <div class="p-10 max-w-3xl mx-auto">
+            <div class="p-10 max-w-5xl mx-auto">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div class="lg:col-span-2">
                         <div class="space-y-8">
@@ -94,18 +94,17 @@
                                 <h3 class="text-xl font-bold mb-4">Estado del asistente</h3>
                                 <div class="flex items-center justify-between bg-white dark:bg-slate-900/50 p-6 rounded-lg shadow-sm">
                                     <div class="flex items-center gap-4">
-                                        <div class="bg-primary/10 dark:bg-primary/20 text-primary p-3 rounded-lg">
+                                        <div id="status-icon" class="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 p-3 rounded-lg transition-colors duration-300">
                                             <span class="material-symbols-outlined">power_settings_new</span>
                                         </div>
                                         <div>
-                                            <p class="font-medium">Estado actual</p>
-                                            <p class="text-sm text-slate-500 dark:text-slate-400">Activo</p>
+                                            <p id="status-text" class="text-xl text-yellow-600 dark:text-yellow-400 font-medium transition-colors duration-300">Chatbot Apagado</p>
                                         </div>
                                     </div>
                                     <label class="relative inline-flex items-center cursor-pointer">
-<input checked="" class="sr-only peer" type="checkbox" value=""/>
-<div class="w-11 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-primary"></div>
-</label>
+                                    <input id="status-toggle" class="sr-only peer" type="checkbox" value="" onchange="toggleStatus()"/>
+                                    <div class="w-11 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-primary peer-checked:w-14 peer-checked:h-7 peer-checked:after:h-6 peer-checked:after:w-6"></div>
+                                    </label>
                                 </div>
                             </div>
                             <div>
@@ -160,6 +159,26 @@
             </div>
         </main>
     </div>
+
+    <script>
+        function toggleStatus() {
+            const toggle = document.getElementById('status-toggle');
+            const statusIcon = document.getElementById('status-icon');
+            const statusText = document.getElementById('status-text');
+            
+            if (toggle.checked) {
+                // Estado activo - verde
+                statusIcon.className = 'bg-primary/10 dark:bg-primary/20 text-primary p-3 rounded-lg transition-colors duration-300';
+                statusText.className = 'text-xl text-primary font-medium transition-colors duration-300';
+                statusText.textContent = 'Chatbot Encendido';
+            } else {
+                // Estado inactivo - amarillo
+                statusIcon.className = 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 p-3 rounded-lg transition-colors duration-300';
+                statusText.className = 'text-xl text-yellow-600 dark:text-yellow-400 font-medium transition-colors duration-300';
+                statusText.textContent = 'Chatbot Apagado';
+            }
+        }
+    </script>
 
 </body>
 
