@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Chat Assistant Context</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+              extend: {
+                colors: {
+                  "primary": "#38e07b",
+                  "background-light": "#f6f8f7",
+                  "background-dark": "#122017",
+                  "content-light": "#122017",
+                  "content-dark": "#f6f8f7",
+                  "subtle-light": "#e8f2ec",
+                  "subtle-dark": "#2a3c31",
+                  "border-light": "#d1e6d9",
+                  "border-dark": "#3d5446"
+                },
+                fontFamily: {
+                  "display": ["Inter", "sans-serif"]
+                },
+                borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px"},
+              },
+            },
+          }
+    </script>
+</head>
+
+<body class="font-display bg-background-light dark:bg-background-dark text-content-light dark:text-content-dark">
+    <div class="flex min-h-screen">
+        <aside class="w-64 fixed inset-y-0 bg-subtle-light dark:bg-subtle-dark p-6 flex flex-col">
+            <div class="flex items-center gap-3 mb-10">
+                <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white">
+                    <span class="material-symbols-outlined">
+                        chat
+                    </span>
+                </div>
+                <h1 class="text-xl font-bold">Chat Assistant</h1>
+            </div>
+            <nav class="flex flex-col gap-2">
+                <a href="05_panel_control.html" class="flex items-center gap-3 px-4 py-2 rounded-lg text-content-light dark:text-content-dark hover:bg-primary/20 dark:hover:bg-primary/30" href="#">
+                    <span class="material-symbols-outlined">home</span>
+                    <span>Inicio</span>
+                </a>
+                <a href="06_biz_context.html" class="flex items-center gap-3 px-4 py-2 rounded-lg bg-primary/20 dark:bg-primary/30 text-primary font-bold" href="#">
+                    <span class="material-symbols-outlined">chat_bubble</span>
+                    <span>Contexto</span>
+                </a>
+                <a href="07_flujo_conversacion.html" class="flex items-center gap-3 px-4 py-2 rounded-lg text-content-light dark:text-content-dark hover:bg-primary/20 dark:hover:bg-primary/30" href="#">
+                    <span class="material-symbols-outlined">contacts</span>
+                    <span>Conversacion</span>
+                </a>
+                <a href="08_configuracion_asistencia.html" class="flex items-center gap-3 px-4 py-2 rounded-lg text-content-light dark:text-content-dark hover:bg-primary/20 dark:hover:bg-primary/30" href="#">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span>Asistencia</span>
+                </a>
+            </nav>
+            <div class="mt-auto">
+                <button class="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg bg-subtle-light dark:bg-subtle-dark border border-border-light dark:border-border-dark hover:bg-primary/10 dark:hover:bg-primary/20">
+                            <span class="material-symbols-outlined">help</span>
+                            <span>Ayuda</span>
+                </button>
+            </div>
+        </aside>
+        <main class="flex-1 ml-64">
+            <header class="p-4 border-b border-border-light dark:border-border-dark">
+                <h2 class="text-2xl font-semibold text-content-light dark:text-content-dark">Contexto del negocio</h2>
+                <p class="text-content-light/70 dark:text-content-dark/70 mt-1">Esta información ayudará al asistente a entender mejor tu negocio y a proporcionar respuestas más precisas.</p>
+            </header>
+            <div class="p-10 max-w-3xl mx-auto">
+                <form class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-content-light dark:text-content-dark mb-2" for="business-name">Nombre del negocio</label>
+                        <input class="w-full bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-colors" id="business-name" placeholder="Ej: Tienda de Mascotas Felices" type="text" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-content-light dark:text-content-dark mb-2" for="business-description">Descripción del negocio</label>
+                        <textarea class="w-full bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-colors resize-y" id="business-description" placeholder="Describe brevemente a qué se dedica tu negocio, qué productos o servicios ofreces." rows="4"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-content-light dark:text-content-dark mb-2" for="customer-type">Tipo de clientes</label>
+                        <textarea class="w-full bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-colors resize-y" id="customer-type" placeholder="Describe a tu cliente ideal. ¿Son jóvenes, adultos, empresas, etc.?" rows="4"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-content-light dark:text-content-dark mb-2" for="faq">Preguntas frecuentes</label>
+                        <textarea class="w-full bg-background-light dark:bg-background-dark border border-border-light dark:border-border-dark rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-colors resize-y" id="faq" placeholder="Añade preguntas y respuestas comunes. Ej: ¿Cuál es el horario de atención? Lunes a Viernes de 9am a 6pm." rows="6"></textarea>
+                    </div>
+                    <div class="flex justify-end pt-4">
+                        <button class="bg-primary text-background-dark font-bold py-3 px-6 rounded-lg hover:bg-primary/90 transition-colors" type="submit">
+                            Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>

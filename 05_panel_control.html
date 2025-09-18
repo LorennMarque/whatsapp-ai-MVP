@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>ChatAssist Dashboard</title>
+    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+              extend: {
+                colors: {
+                  "primary": "#38e07b",
+                  "background-light": "#f6f8f7",
+                  "background-dark": "#122017",
+                  "content-light": "#122017",
+                  "content-dark": "#f6f8f7",
+                  "subtle-light": "#e8f2ec",
+                  "subtle-dark": "#2a3c31",
+                  "border-light": "#d1e6d9",
+                  "border-dark": "#3d5446"
+                },
+                fontFamily: {
+                  "display": ["Inter", "sans-serif"]
+                },
+                borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px"},
+              },
+            },
+          }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+</head>
+
+<body class="font-display bg-background-light dark:bg-background-dark text-content-light dark:text-content-dark">
+    <div class="flex min-h-screen">
+        <aside class="w-64 fixed inset-y-0 bg-subtle-light dark:bg-subtle-dark p-6 flex flex-col">
+            <div class="flex items-center gap-3 mb-10">
+                <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white">
+                    <span class="material-symbols-outlined">
+                        chat
+                    </span>
+                </div>
+                <h1 class="text-xl font-bold">Chat Assistant</h1>
+            </div>
+            <nav class="flex flex-col gap-2">
+                <a href="05_panel_control.html" class="flex items-center gap-3 px-4 py-2 rounded-lg bg-primary/20 dark:bg-primary/30 text-primary font-bold" href="#">
+                    <span class="material-symbols-outlined">home</span>
+                    <span>Inicio</span>
+                </a>
+                <a href="06_biz_context.html" class="flex items-center gap-3 px-4 py-2 rounded-lg text-content-light dark:text-content-dark hover:bg-primary/20 dark:hover:bg-primary/30" href="#">
+                    <span class="material-symbols-outlined">chat_bubble</span>
+                    <span>Contexto</span>
+                </a>
+                <a href="07_flujo_conversacion.html" class="flex items-center gap-3 px-4 py-2 rounded-lg text-content-light dark:text-content-dark hover:bg-primary/20 dark:hover:bg-primary/30" href="#">
+                    <span class="material-symbols-outlined">contacts</span>
+                    <span>Conversacion</span>
+                </a>
+                <a href="08_configuracion_asistencia.html" class="flex items-center gap-3 px-4 py-2 rounded-lg text-content-light dark:text-content-dark hover:bg-primary/20 dark:hover:bg-primary/30" href="#">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span>Asistencia</span>
+                </a>
+            </nav>
+            <div class="mt-auto">
+                <button class="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg bg-subtle-light dark:bg-subtle-dark border border-border-light dark:border-border-dark hover:bg-primary/10 dark:hover:bg-primary/20">
+                            <span class="material-symbols-outlined">help</span>
+                            <span>Ayuda</span>
+                </button>
+            </div>
+        </aside>
+
+        <main class="flex-1 ml-64">
+            <header class="p-4 border-b border-border-light dark:border-border-dark">
+                <h2 class="text-2xl font-semibold text-content-light dark:text-content-dark">Panel de control</h2>
+                <p class="text-content-light/70 dark:text-content-dark/70 mt-1">Aquí tienes una visión general del rendimiento de tu asistente de WhatsApp.</p>
+            </header>
+            <div class="p-10 max-w-3xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2">
+                        <div class="space-y-8">
+                            <div>
+                                <h3 class="text-xl font-bold mb-4">Estado del asistente</h3>
+                                <div class="flex items-center justify-between bg-white dark:bg-slate-900/50 p-6 rounded-lg shadow-sm">
+                                    <div class="flex items-center gap-4">
+                                        <div class="bg-primary/10 dark:bg-primary/20 text-primary p-3 rounded-lg">
+                                            <span class="material-symbols-outlined">power_settings_new</span>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Estado actual</p>
+                                            <p class="text-sm text-slate-500 dark:text-slate-400">Activo</p>
+                                        </div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-primary"></div>
+</label>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-4">Resumen</h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    <div class="bg-white dark:bg-slate-900/50 p-6 rounded-lg shadow-sm">
+                                        <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Conversaciones gestionadas</p>
+                                        <p class="text-3xl font-bold mt-2">1,234</p>
+                                    </div>
+                                    <div class="bg-white dark:bg-slate-900/50 p-6 rounded-lg shadow-sm">
+                                        <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Conversaciones por día (promedio)</p>
+                                        <p class="text-3xl font-bold mt-2">123</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-1">
+                        <h3 class="text-xl font-bold mb-4">Actividad reciente</h3>
+                        <div class="bg-white dark:bg-slate-900/50 p-6 rounded-lg shadow-sm">
+                            <div class="flex items-baseline justify-between">
+                                <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Últimos 7 días</p>
+                                <div class="flex items-center gap-1 text-sm font-medium text-primary">
+                                    <span class="material-symbols-outlined text-base">trending_up</span>
+                                    <span>+12%</span>
+                                </div>
+                            </div>
+                            <div class="mt-4 h-48">
+                                <svg fill="none" height="100%" preserveAspectRatio="none" viewBox="0 0 472 150" width="100%" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25V149H0V109Z" fill="url(#paint0_linear_chart)"></path>
+<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25" stroke="#38e07b" stroke-linecap="round" stroke-width="3"></path>
+<defs>
+<linearGradient gradientUnits="userSpaceOnUse" id="paint0_linear_chart" x1="236" x2="236" y1="1" y2="149">
+<stop stop-color="#38e07b" stop-opacity="0.3"></stop>
+<stop offset="1" stop-color="#38e07b" stop-opacity="0"></stop>
+</linearGradient>
+</defs>
+</svg>
+                            </div>
+                            <div class="flex justify-between text-xs font-bold text-slate-400 dark:text-slate-500 mt-2">
+                                <span>Lun</span>
+                                <span>Mar</span>
+                                <span>Mié</span>
+                                <span>Jue</span>
+                                <span>Vie</span>
+                                <span>Sáb</span>
+                                <span>Dom</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>

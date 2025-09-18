@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>ChatAssist - Crear Cuenta</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#38e07b",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#122017",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200">
+    <div class="flex flex-col min-h-screen">
+        <header class="border-b border-gray-200/50 dark:border-gray-700/50">
+            <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 text-primary">
+                        <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M12.0799 24L4 19.2479L9.95537 8.75216L18.04 13.4961L18.0446 4H29.9554L29.96 13.4961L38.0446 8.75216L44 19.2479L35.92 24L44 28.7521L38.0446 39.2479L29.96 34.5039L29.9554 44H18.0446L18.04 34.5039L9.95537 39.2479L4 28.7521L12.0799 24Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+                    </div>
+                    <h1 class="text-xl font-bold text-gray-900 dark:text-white">ChatAssist</h1>
+                </div>
+            </div>
+        </header>
+        <main class="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+            <div class="w-full max-w-md space-y-8">
+                <div>
+                    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">Crea tu cuenta</h2>
+                    <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+                        Y comienza a gestionar tu WhatsApp empresarial
+                    </p>
+                </div>
+                <form action="#" class="mt-8 space-y-6" method="POST">
+                    <div class="rounded-lg shadow-sm -space-y-px">
+                        <div>
+                            <label class="sr-only" for="full-name">Nombre completo</label>
+                            <input class="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-background-light dark:bg-background-dark rounded-t-lg focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm" id="full-name" name="full-name" placeholder="Nombre completo" required="" type="text" />
+                        </div>
+                        <div>
+                            <label class="sr-only" for="email-address">Dirección de correo electrónico</label>
+                            <input autocomplete="email" class="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-background-light dark:bg-background-dark focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm" id="email-address" name="email" placeholder="Dirección de correo electrónico" required="" type="email" />
+                        </div>
+                        <div>
+                            <label class="sr-only" for="password">Contraseña</label>
+                            <input autocomplete="current-password" class="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-background-light dark:bg-background-dark rounded-b-lg focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm" id="password" name="password" placeholder="Contraseña" required="" type="password" />
+                        </div>
+                    </div>
+                    <div>
+                        <a href="01_biz_context.html" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-black bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" type="submit">
+                            Registrarse
+</a>
+                    </div>
+                </form>
+                <p class="text-center text-sm text-gray-600 dark:text-gray-400">
+                    ¿Ya tienes una cuenta?
+                    <a class="font-medium text-primary hover:text-primary/90" href="#">
+                        Iniciar sesión
+                    </a>
+                </p>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>
