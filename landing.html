@@ -8,40 +8,8 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-    <style type="text/css">
-        body {
-          font-family: Sora, sans-serif;
-        }
-    </style>
-    <script id="tailwind-config" type="text/javascript">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#38e07b",
-                        "background-light": "#f6f8f7",
-                        "background-dark": "#122017",
-                        "content-light": "#122017",
-                        "content-dark": "#f6f8f7",
-                        "subtle-light": "#e8f2ec",
-                        "subtle-dark": "#2a3c31",
-                        "border-light": "#d1e6d9",
-                        "border-dark": "#3d5446"
-                    },
-                    fontFamily: {
-                        "display": ["Inter", "sans-serif"]
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.5rem",
-                        "lg": "0.75rem",
-                        "xl": "1rem",
-                        "full": "9999px"
-                    },
-                },
-            },
-        }
-    </script>
+    <link href="styles.css" rel="stylesheet" />
+    <script src="tailwind-config.js"></script>
 </head>
 
 <body class="bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-200 font-display">
@@ -158,7 +126,7 @@
                 </div>
             </div>
             
-            <section class="py-16 sm:py-24 bg-background-light dark:bg-background-dark">
+            <section class="py-16 sm:py-24">
                 <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white text-center">
                     Diseñado para hacerte la vida más fácil
                 </h2>
