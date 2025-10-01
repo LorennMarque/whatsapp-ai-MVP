@@ -12,6 +12,26 @@
         body {
           font-family: Sora, sans-serif;
         }
+        @keyframes float {
+          0% { transform: translateY(0) }
+          50% { transform: translateY(-6px) }
+          100% { transform: translateY(0) }
+        }
+        .float-slow {
+          animation: float 6s ease-in-out infinite;
+        }
+        .float-slow-2 {
+          animation: float 7s ease-in-out infinite;
+          animation-delay: .6s;
+        }
+        .float-slow-3 {
+          animation: float 8s ease-in-out infinite;
+          animation-delay: 1.2s;
+        }
+        .float-slow-4 {
+          animation: float 7.5s ease-in-out infinite;
+          animation-delay: .9s;
+        }
     </style>
     <script id="tailwind-config" type="text/javascript">
         tailwind.config = {
@@ -40,7 +60,7 @@
                     },
                 },
             },
-        }
+        };
     </script>
 </head>
 
@@ -66,7 +86,7 @@
                 <button class="bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-opacity-90">Get Started</button>
             </div>
         </header>
-        <main class="text-center py-16 sm:py-24">
+        <main class="text-center py-6">
             <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white leading-tight">
                 Atende tu WhatApp 24/7<br/>Con un Agente AI
             </h1>
@@ -88,68 +108,62 @@
                 </div>
                 <div class="relative flex justify-center items-center min-h-[500px]">
                     <!-- Elemento superior izquierdo - Producto azul con estrellas -->
-                    <div class="absolute -top-8 -left-16 sm:-left-8 md:-left-4 lg:left-8 w-40 sm:w-44 md:w-48">
-                        <div class="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg">
-                            <img alt="Blue cosmetic product" class="rounded-md w-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnvGy_6TRbN3FYYokUdd4yiNSQ-zduO12QeKVlfuQx5OauIvvb1ZzF4IO1ayZl1SWI9WG6qse_He2kCzsiHzn1MyWqMYep1C9c8y2yE-g06EvXeOiNyHu1RFG_QFBYCyMguEL2KKPAtDza_GXzmdo4DQslvpDSWUzgDERmtZIZqAbSZbT77BaLfhgrvtK_Eq8bDYMC1egliP290PkQd97JAE-K5LVUxvhFBReiCjxiJznpK23EpieMheOYLCaYxaWpDdoEVYy-q3ZG" />
-                        </div>
-                        <div class="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-lg mt-4 flex items-center justify-center space-x-1">
-                            <span class="material-icons text-yellow-400">star</span>
-                            <span class="material-icons text-yellow-400">star</span>
-                            <span class="material-icons text-yellow-400">star</span>
-                            <span class="material-icons text-yellow-400">star</span>
-                            <span class="material-icons text-yellow-400">star</span>
+                    <div class="absolute -top-6 left-2 sm:left-6 md:left-8 lg:left-10 w-52 sm:w-56 md:w-60 lg:w-64 float-slow">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                                    WA
+                                </div>
+                                <div class="flex-1">
+                                    <div class="bg-[#D9FDD3] p-4 rounded-lg shadow-md">
+                                        <p class="text-base text-gray-800 dark:text-gray-200 leading-relaxed">¡Hola! Soy tu asistente de WhatsApp con IA.</p>
+                                    </div>
+                                </div>
                         </div>
                     </div>
                     
-                    <!-- Elemento superior derecho - Verde con "8 items" -->
-                    <div class="absolute -top-4 -right-12 sm:-right-4 md:right-0 lg:right-12 w-44 sm:w-48 md:w-52">
-                        <div class="bg-lime-200 dark:bg-lime-900/50 p-4 rounded-xl shadow-lg flex items-center">
-                            <div>
-                                <p class="text-3xl font-bold text-lime-900 dark:text-lime-100">8 <span class="text-base font-normal">items</span></p>
-                                <p class="text-xs text-lime-800 dark:text-lime-200 mt-1">Sold this week</p>
-                                <div class="mt-2 bg-white dark:bg-gray-800 text-lime-900 dark:text-lime-100 text-xs px-2 py-1 rounded-full font-bold">912</div>
+                    <!-- Elemento superior derecho - Chat de asistente -->
+                    <div class="absolute -top-4 right-2 sm:right-6 md:right-8 lg:right-10 w-52 sm:w-56 md:w-60 lg:w-64 float-slow-2">
+                        <div class="flex items-start space-x-3 justify-end">
+                            <div class="flex-1">
+                                <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                                    <p class="text-base text-gray-800 dark:text-gray-200 leading-relaxed">Atiendo a tus clientes cuando no estas disponible</p>
+                                </div>
                             </div>
-                            <img alt="Water bottle product" class="w-12 ml-2 transform -rotate-12" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVCGlulGQBvFryK5DTH9SFLhQLLJZw2yuJoAm8UfxpGDIYYd8YkYkpZMMRoKworOWShWMCpp3DRDO4GxGec6DDHay5FLKyh6vVyLFIBkOXBUo6LApq1MVwqZYmSWZrb64R7eMSrstN7Vkf3biNJ13mTVeJ2GhtY0qO5RTXAXquaivI7nTpVS7Bw5msCDEC9OO-8dIIjtysyXWikkBYr9lxpVmAkzMoelHwg5X8BiFT03klvxcbIvVHK3olynKH4lapqYtoW3zVVGyy" />
+                            <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                                AI
+                            </div>
                         </div>
                     </div>
                     
                     <!-- Teléfono centrado -->
-                    <div class="relative w-64 sm:w-72 md:w-80 lg:w-84 h-[70vh] rounded-3xl shadow-2xl overflow-hidden border-8 border-black dark:border-gray-700 z-10">
-                        <div class="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-4 bg-black dark:bg-gray-700 rounded-b-md"></div>
-
+                    <div class="relative w-64 sm:w-72 md:w-80 lg:w-84 h-[60vh] rounded-3xl shadow-2xl overflow-hidden border-8 border-black dark:border-gray-700 z-10">
                         <iframe src="PHONE_MOCKUP.html" class="w-full h-full"></iframe>
-
-
                     </div>
                     
                     <!-- Elemento inferior izquierdo - Gráfico amarillo "40%" -->
-                    <div class="absolute bottom-8 -left-12 sm:-left-4 md:left-0 lg:left-12 w-48 sm:w-52 md:w-56">
-                        <div class="bg-yellow-100 dark:bg-yellow-900/50 p-4 rounded-xl shadow-lg">
-                            <p class="text-sm font-semibold text-yellow-800 dark:text-yellow-200">Engagement</p>
-                            <div class="flex items-center mt-2">
-                                <div class="flex items-end space-x-1 h-8">
-                                    <div class="w-2 bg-yellow-400 rounded-full" style="height: 40%"></div>
-                                    <div class="w-2 bg-yellow-400 rounded-full" style="height: 60%"></div>
-                                    <div class="w-2 bg-yellow-400 rounded-full" style="height: 80%"></div>
-                                    <div class="w-2 bg-yellow-400 rounded-full" style="height: 50%"></div>
+                    <div class="absolute bottom-14 left-2 sm:left-6 md:left-8 lg:left-10 w-52 sm:w-56 md:w-60 lg:w-64 float-slow-3">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                                ⚡
+                            </div>
+                            <div class="flex-1">
+                                <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                                    <p class="text-base text-gray-800 dark:text-gray-200 leading-relaxed">Tiempos de respuesta perfectos</p>
                                 </div>
-                                <p class="ml-4 text-3xl font-bold text-yellow-900 dark:text-yellow-100">40%</p>
-                                <span class="material-icons text-yellow-500 dark:text-yellow-400 ml-2">arrow_drop_up</span>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Elemento inferior derecho - Post de Instagram con likes -->
-                    <div class="absolute bottom-4 -right-8 sm:-right-2 md:right-4 lg:right-16 w-40 sm:w-44 md:w-48">
-                        <div class="bg-white dark:bg-gray-800 p-2 rounded-lg shadow-lg">
-                            <img alt="Close up of a woman's face" class="rounded-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAtAtojayoJYdK9RRCXM4AL5vpgBZEw2gXFrT69VtgxHcE7hcET5crHLtjQ_qe_ubUnb7UMy69lfx9sdkhapJ_LhpX-6zfQr2xG74bE8AIBDRlZBELOy5elpvbSkCeeiOItF95qRftPnkXTFqPfApm3VMxj-bTti4IXjfJx5by0ry5T4pW5yMLi3o-ETv5W0Yg80mnw_NCYpNQYRV-bAvJiaxhhdeU3KkHiLoAHa6bwIBCOKBLsjsbCl4dUejD6bwIcJjyvWSfZS_f" />
-                            <div class="flex justify-between items-center mt-2 px-1">
-                                <div class="flex items-center space-x-1">
-                                    <span class="material-icons text-red-500">favorite_border</span>
-                                    <span class="material-icons text-gray-500 dark:text-gray-400">chat_bubble_outline</span>
-                                    <span class="material-icons text-gray-500 dark:text-gray-400">send</span>
+                    <!-- Elemento inferior derecho - Chat de asistente -->
+                    <div class="absolute bottom-12 right-2 sm:right-6 md:right-8 lg:right-10 w-52 sm:w-56 md:w-60 lg:w-64 float-slow-4">
+                        <div class="flex items-start space-x-3 justify-end">
+                            <div class="flex-1">
+                                <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                                    <p class="text-base text-gray-800 dark:text-gray-200 leading-relaxed">Asistiendo a tus clientes 24/7</p>
                                 </div>
-                                <div class="bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-300 text-xs px-2 py-0.5 rounded-full">1.5k</div>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                                AI
                             </div>
                         </div>
                     </div>
