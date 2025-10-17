@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autenticando...</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-[#F8FAFC] flex items-center justify-center min-h-screen">
+    <div class="text-center">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <h2 class="text-xl font-semibold text-gray-800 mb-2">Autenticando...</h2>
+        <p class="text-gray-600">Por favor espera mientras configuramos tu sesión</p>
+    </div>
+
+    <script>
+        // Extract tokens from URL fragment
+        function getTokensFromFragment() {
+            const fragment = window.location.hash.substring(1);
+            const params = new URLSearchParams(fragment);
+            
+            return {
+                access_token: params.get('access_token'),
+                refresh_token: params.get('refresh_token'),
+                expires_at: params.get('expires_at'),
+                token_type: params.get('token_type')
+            };
+        }
+
+        // Set session with tokens
+        async function setSession() {
+            const tokens = getTokensFromFragment();
+            
+            if (!tokens.access_token) {
+                console.error('No access token found');
+                window.location.href = '/';
+                return;
+            }
+
+            try {
+                const response = await fetch('/auth/set-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        access_token: tokens.access_token,
+                        refresh_token: tokens.refresh_token
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Redirect to main page
+                    window.location.href = '/';
+                } else {
+                    console.error('Failed to set session:', data.error);
+                    window.location.href = '/';
+                }
+            } catch (error) {
+                console.error('Error setting session:', error);
+                window.location.href = '/';
+            }
+        }
+
+        // Run when page loads
+        document.addEventListener('DOMContentLoaded', setSession);
+    </script>
+</body>
+</html>

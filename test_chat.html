@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Chat - WhatsApp AI MVP</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            font-family: 'Inter', sans-serif;
+        }
+        .message-item {
+            animation: fadeInUp 0.3s ease-out;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .typing-dot {
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#F8FAFC] h-screen flex">
+    
+    <!-- Main Container -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden">
+        
+        <!-- Header -->
+        <div class="bg-white border-b border-gray-200 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                        <span class="text-white font-medium text-sm">AI</span>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-900">Asistente de IA</h2>
+                        <p class="text-sm text-gray-500">Configurando tu agente</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span class="text-sm text-gray-500">En línea</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Messages Container -->
+        <div id="chatContainer" class="flex-1 bg-[#F8FAFC] overflow-y-auto">
+            <!-- Messages will be dynamically loaded here -->
+        </div>
+
+        <!-- Input Bar -->
+        <div class="bg-white border-t border-gray-200 p-4">
+            <div class="flex items-center space-x-3">
+                <div class="flex-1 relative">
+                    <input
+                        type="text"
+                        id="messageInput"
+                        placeholder="Escribe tu mensaje..."
+                        class="w-full px-4 py-3 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 text-gray-900 placeholder-gray-500"
+                        autocomplete="off"
+                    />
+                </div>
+                <button
+                    id="sendButton"
+                    class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Chat Renderer -->
+    <script src="static/js/chat.js"></script>
+    
+    <script>
+        // Initialize chat renderer
+        let chatRenderer;
+        
+        // Sample conversation data
+        const conversationData = {
+            messages: [
+                {
+                    id: '1',
+                    text: 'Hola, quiero crear un agente para mi negocio de restaurante',
+                    sender: 'user',
+                    timestamp: new Date(),
+                    userAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face',
+                    userInitial: 'J'
+                },
+                {
+                    id: '2',
+                    text: '¡Perfecto! Me encanta ayudarte a crear un agente personalizado para tu restaurante. Para comenzar, ¿podrías contarme más detalles sobre qué tipo de restaurante tienes?',
+                    sender: 'ai',
+                    timestamp: new Date(),
+                    suggestions: [
+                        { id: 's1', text: 'Restaurante de comida rápida' },
+                        { id: 's2', text: 'Restaurante gourmet' },
+                        { id: 's3', text: 'Cafetería' },
+                        { id: 's4', text: 'Otro tipo' }
+                    ]
+                }
+            ]
+        };
+        
+        // Initialize chat when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize chat renderer
+            chatRenderer = new ChatRenderer('chatContainer');
+            
+            // Load initial messages
+            if (conversationData.messages.length > 0) {
+                chatRenderer.loadMessages(conversationData.messages);
+            }
+            
+            // Set up message input handlers
+            const messageInput = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendButton');
+            
+            // Send message on Enter key
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+            
+            // Send message on button click
+            sendButton.addEventListener('click', sendMessage);
+            
+            // Auto-focus on input
+            messageInput.focus();
+        });
+        
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message with avatar
+            chatRenderer.addMessage({
+                id: Date.now().toString(),
+                text: message,
+                sender: 'user',
+                timestamp: new Date(),
+                userAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face',
+                userInitial: 'J'
+            });
+            
+            // Clear input
+            messageInput.value = '';
+            
+            // Show typing indicator
+            chatRenderer.showTyping();
+            
+            // Simulate AI response
+            setTimeout(() => {
+                chatRenderer.hideTyping();
+                
+                // Generate AI response based on message content
+                const aiResponse = generateAIResponse(message);
+                
+                chatRenderer.addMessage({
+                    id: (Date.now() + 1).toString(),
+                    text: aiResponse,
+                    sender: 'ai',
+                    timestamp: new Date()
+                });
+            }, 1500 + Math.random() * 1000);
+        }
+        
+        function generateAIResponse(userMessage) {
+            const responses = [
+                "Entiendo perfectamente. ¿Podrías darme más detalles sobre tu industria?",
+                "Excelente punto. ¿Qué tipo de clientes atiende tu negocio?",
+                "Muy interesante. ¿Cuáles son los principales desafíos que enfrentas con tus clientes?",
+                "Perfecto. ¿Te gustaría que tu agente tenga algún tono específico de comunicación?",
+                "Excelente. ¿Hay alguna funcionalidad específica que te gustaría que tu agente pueda realizar?",
+                "Entiendo. ¿Cuántas consultas aproximadas esperas manejar por día?",
+                "Perfecto. ¿Te gustaría que integre algún sistema específico con tu agente?",
+                "Excelente. Estamos casi listos. ¿Hay algo más que te gustaría agregar?",
+                "Perfecto. Tu agente está casi listo. Solo necesito confirmar algunos detalles finales.",
+                "Excelente. ¡Tu agente está configurado! ¿Te gustaría probarlo ahora?"
+            ];
+            
+            const messageLength = userMessage.length;
+            const responseIndex = Math.min(Math.floor(messageLength / 20), responses.length - 1);
+            
+            return responses[responseIndex];
+        }
+    </script>
+</body>
+</html>

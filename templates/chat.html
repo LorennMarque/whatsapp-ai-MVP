@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - WhatsApp AI MVP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            font-family: 'Inter', sans-serif;
+        }
+        .message-item {
+            animation: fadeInUp 0.3s ease-out;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .typing-dot {
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .suggestion-button {
+            transition: opacity 0.3s ease, transform 0.3s ease, scale 0.2s ease;
+        }
+        .suggestion-button:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-[#F8FAFC] h-screen flex">
+    
+    {% include 'components/sidebar.html' %}
+    
+    <!-- Main Container -->
+    <div class="flex-1 flex h-screen overflow-hidden">
+        
+        <!-- Chat Section -->
+        <div id="chatSection" class="flex-1 flex flex-col transition-all duration-300">
+            <!-- Header -->
+            <div class="bg-white px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-900">Configurando {TEMA DEL AGENTE}</h2>
+                        <p class="text-sm text-gray-500">Detalle de la conversación</p>
+                    </div>
+                    <button
+                        id="previewToggleBtn"
+                        class="flex items-center space-x-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        <span class="text-sm font-medium">Vista Previa</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat Messages Container -->
+            <div id="chatContainer" class="flex-1 bg-[#F8FAFC] overflow-y-auto">
+                <!-- Messages will be dynamically loaded here -->
+            </div>
+
+            <!-- Input Bar -->
+            <div class="bg-white border-t border-gray-200 p-4">
+                <div class="flex items-center space-x-3">
+                    <div class="flex-1 relative">
+                        <input
+                            type="text"
+                            id="messageInput"
+                            placeholder="Escribe tu mensaje..."
+                            class="w-full px-4 py-3 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 text-gray-900 placeholder-gray-500"
+                            autocomplete="off"
+                        />
+                    </div>
+                    <button
+                        id="sendButton"
+                        class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview Panel -->
+        <div id="previewPanel" class="w-0 bg-[#10192B] transition-all duration-300 overflow-hidden">
+            <div class="h-full flex flex-col">
+                <!-- Preview Header -->
+                <div class="bg-[#10192B] border-b border-gray-700 px-6 py-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-white">Vista Previa</h3>
+                        <button
+                            id="closePreviewBtn"
+                            class="text-gray-400 hover:text-white transition-colors"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Preview Content -->
+                <div class="flex-1 p-6">
+                    <div class="text-center text-gray-400">
+                        <svg class="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                        <p class="text-lg font-medium mb-2">Vista Previa del Agente</p>
+                        <p class="text-sm">Aquí podrás ver cómo se verá tu agente en acción</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Chat Renderer -->
+    <script src="/static/js/chat.js"></script>
+    
+    <script>
+        // Initialize chat renderer
+        let chatRenderer;
+        
+        // Override getUserAvatar and getUserInitial methods
+        ChatRenderer.prototype.getUserAvatar = function() {
+            return userInfo.avatar;
+        };
+        
+        ChatRenderer.prototype.getUserInitial = function() {
+            return userInfo.initial;
+        };
+        
+        // Initial message from URL parameter
+        const initialMessage = "{{ initial_message }}";
+        
+        // User information from backend
+        const userInfo = {
+            name: "{{ user.name if user else '' }}",
+            avatar: "{{ user.avatar_url if user and user.avatar_url else '' }}",
+            initial: "{{ user.name[0].upper() if user and user.name else 'U' }}"
+        };
+        
+        // Sample conversation data - this would come from your backend
+        const conversationData = {
+            messages: [
+                {
+                    id: '1',
+                    text: initialMessage || 'Hola, quiero crear un agente para mi negocio',
+                    sender: 'user',
+                    timestamp: new Date(),
+                    userAvatar: userInfo.avatar,
+                    userInitial: userInfo.initial
+                },
+                {
+                    id: '2',
+                    text: '¡Perfecto! Me encanta ayudarte a crear un agente personalizado para tu negocio. Para comenzar, ¿podrías contarme más detalles sobre qué tipo de negocio tienes?',
+                    sender: 'ai',
+                    timestamp: new Date(),
+                    suggestions: [
+                        { id: 's1', text: 'Restaurante' },
+                        { id: 's2', text: 'Tienda online' },
+                        { id: 's3', text: 'Servicios profesionales' },
+                        { id: 's4', text: 'Otro tipo de negocio' }
+                    ]
+                }
+            ]
+        };
+        
+        // Initialize chat when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize chat renderer
+            chatRenderer = new ChatRenderer('chatContainer');
+            
+            // Load initial messages
+            if (conversationData.messages.length > 0) {
+                chatRenderer.loadMessages(conversationData.messages);
+            }
+            
+            // Set up message input handlers
+            const messageInput = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendButton');
+            
+            // Send message on Enter key
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+            
+            // Send message on button click
+            sendButton.addEventListener('click', sendMessage);
+            
+            // Auto-focus on input
+            messageInput.focus();
+            
+            // Set up preview toggle functionality
+            setupPreviewToggle();
+            
+            // Set up suggestion click listener
+            document.addEventListener('suggestionClick', function(event) {
+                console.log('Suggestion clicked:', event.detail);
+                // You can add custom logic here for handling suggestion clicks
+            });
+        });
+        
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message with user info
+            chatRenderer.addMessage({
+                id: Date.now().toString(),
+                text: message,
+                sender: 'user',
+                timestamp: new Date(),
+                userAvatar: userInfo.avatar,
+                userInitial: userInfo.initial
+            });
+            
+            // Clear input
+            messageInput.value = '';
+            
+            // Show typing indicator
+            chatRenderer.showTyping();
+            
+            // Simulate AI response (replace with actual API call)
+            setTimeout(() => {
+                chatRenderer.hideTyping();
+                
+                // Generate AI response based on message content
+                const aiResponse = generateAIResponse(message);
+                
+                chatRenderer.addMessage({
+                    id: (Date.now() + 1).toString(),
+                    text: aiResponse.text,
+                    sender: 'ai',
+                    timestamp: new Date(),
+                    suggestions: aiResponse.suggestions
+                });
+            }, 1500 + Math.random() * 1000); // Random delay between 1.5-2.5 seconds
+        }
+        
+        function generateAIResponse(userMessage) {
+            const responses = [
+                {
+                    text: "Entiendo perfectamente. ¿Podrías darme más detalles sobre tu industria?",
+                    suggestions: [
+                        { id: 's1', text: 'Tecnología' },
+                        { id: 's2', text: 'Salud' },
+                        { id: 's3', text: 'Educación' },
+                        { id: 's4', text: 'Otro' }
+                    ]
+                },
+                {
+                    text: "Excelente punto. ¿Qué tipo de clientes atiende tu negocio?",
+                    suggestions: [
+                        { id: 's1', text: 'Empresas B2B' },
+                        { id: 's2', text: 'Consumidores finales' },
+                        { id: 's3', text: 'Ambos' }
+                    ]
+                },
+                {
+                    text: "Muy interesante. ¿Cuáles son los principales desafíos que enfrentas con tus clientes?",
+                    suggestions: [
+                        { id: 's1', text: 'Atención al cliente' },
+                        { id: 's2', text: 'Procesos de venta' },
+                        { id: 's3', text: 'Soporte técnico' },
+                        { id: 's4', text: 'Otros' }
+                    ]
+                },
+                {
+                    text: "Perfecto. ¿Te gustaría que tu agente tenga algún tono específico de comunicación?",
+                    suggestions: [
+                        { id: 's1', text: 'Formal' },
+                        { id: 's2', text: 'Amigable' },
+                        { id: 's3', text: 'Profesional' },
+                        { id: 's4', text: 'Casual' }
+                    ]
+                },
+                {
+                    text: "Excelente. ¿Hay alguna funcionalidad específica que te gustaría que tu agente pueda realizar?",
+                    suggestions: [
+                        { id: 's1', text: 'Responder preguntas' },
+                        { id: 's2', text: 'Programar citas' },
+                        { id: 's3', text: 'Procesar pedidos' },
+                        { id: 's4', text: 'Soporte técnico' }
+                    ]
+                },
+                {
+                    text: "Entiendo. ¿Cuántas consultas aproximadas esperas manejar por día?",
+                    suggestions: [
+                        { id: 's1', text: 'Menos de 50' },
+                        { id: 's2', text: '50-200' },
+                        { id: 's3', text: '200-500' },
+                        { id: 's4', text: 'Más de 500' }
+                    ]
+                },
+                {
+                    text: "Perfecto. ¿Te gustaría que integre algún sistema específico con tu agente?",
+                    suggestions: [
+                        { id: 's1', text: 'CRM' },
+                        { id: 's2', text: 'WhatsApp Business' },
+                        { id: 's3', text: 'Email' },
+                        { id: 's4', text: 'Ninguno' }
+                    ]
+                },
+                {
+                    text: "Excelente. Estamos casi listos. ¿Hay algo más que te gustaría agregar?",
+                    suggestions: [
+                        { id: 's1', text: 'Sí, agregar más' },
+                        { id: 's2', text: 'No, está bien así' }
+                    ]
+                },
+                {
+                    text: "Perfecto. Tu agente está casi listo. Solo necesito confirmar algunos detalles finales.",
+                    suggestions: [
+                        { id: 's1', text: 'Continuar' },
+                        { id: 's2', text: 'Revisar configuración' }
+                    ]
+                },
+                {
+                    text: "Excelente. ¡Tu agente está configurado! ¿Te gustaría probarlo ahora?",
+                    suggestions: [
+                        { id: 's1', text: 'Sí, probar ahora' },
+                        { id: 's2', text: 'Configurar más tarde' }
+                    ]
+                }
+            ];
+            
+            // Simple response selection based on message length and content
+            const messageLength = userMessage.length;
+            const responseIndex = Math.min(Math.floor(messageLength / 20), responses.length - 1);
+            
+            return responses[responseIndex];
+        }
+        
+        // Function to load messages from backend (for future implementation)
+        async function loadMessagesFromBackend() {
+            try {
+                const response = await fetch('/api/messages');
+                const data = await response.json();
+                
+                if (data.messages) {
+                    chatRenderer.loadMessages(data.messages);
+                }
+            } catch (error) {
+                console.error('Error loading messages:', error);
+            }
+        }
+        
+        // Function to save messages to backend (for future implementation)
+        async function saveMessageToBackend(message) {
+            try {
+                const response = await fetch('/api/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(message)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to save message');
+                }
+            } catch (error) {
+                console.error('Error saving message:', error);
+            }
+        }
+        
+        // Preview toggle functionality
+        function setupPreviewToggle() {
+            const previewToggleBtn = document.getElementById('previewToggleBtn');
+            const closePreviewBtn = document.getElementById('closePreviewBtn');
+            const previewPanel = document.getElementById('previewPanel');
+            const chatSection = document.getElementById('chatSection');
+            
+            let isPreviewOpen = false;
+            
+            // Toggle preview panel
+            function togglePreview() {
+                isPreviewOpen = !isPreviewOpen;
+                
+                if (isPreviewOpen) {
+                    // Open preview
+                    previewPanel.classList.remove('w-0');
+                    previewPanel.classList.add('w-96');
+                    chatSection.classList.add('flex-1');
+                } else {
+                    // Close preview
+                    previewPanel.classList.remove('w-96');
+                    previewPanel.classList.add('w-0');
+                }
+            }
+            
+            // Event listeners
+            previewToggleBtn.addEventListener('click', togglePreview);
+            closePreviewBtn.addEventListener('click', togglePreview);
+            
+            // Close preview when clicking outside (optional)
+            document.addEventListener('click', function(e) {
+                if (isPreviewOpen && !previewPanel.contains(e.target) && !previewToggleBtn.contains(e.target)) {
+                    // Uncomment the line below if you want to close preview when clicking outside
+                    // togglePreview();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

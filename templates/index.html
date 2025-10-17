@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp AI MVP</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-[#F8FAFC] flex">
+
+    {% include 'components/sidebar.html' %}
+    
+    <!-- Main Content -->
+    <div class="flex-1 flex items-center justify-center p-0">
+        <div class="w-full max-w-2xl">
+                {% if user %}
+                <div class="flex justify-center">
+                    <div class="bg-[#F1F5F9] px-4 py-1 flex items-center">
+                        <span class="text-gray-700 text-sm font-medium opacity-85">
+                            Hola{{ ' ' + user.name if user.name }}
+                        </span>
+                    </div>
+                </div>
+                {% endif %}
+            <h1 class="text-center text-2xl font-bold text-[#0E1729] mb-8">Crea un nuevo Asistente</h1>
+            <!-- Main Interface (Same for both authenticated and unauthenticated users) -->
+            <form id="agentForm" class="">
+                <div class="relative mb-3">
+                    <textarea
+                        id="agentPrompt"
+                        class="w-full h-48 p-4 pr-36 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none bg-[#F8FAFC] text-[#0E1729] text-base placeholder:text-gray-500"
+                        placeholder="Quiero un agente que..."
+                    ></textarea>
+                    <button
+                        type="submit"
+                        id="generateBtn"
+                        class="absolute bottom-4 right-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-medium text-sm shadow transition-colors"
+                    >
+                        Generar Agente
+                    </button>
+                </div>
+            </form>
+            
+            <div class="mt-3">
+                <div class="text-sm text-gray-500 mb-2">Prueba estas peticiones</div>
+                <div class="space-y-2">
+                    <div class="border border-gray-200 bg-[#F8FAFC] rounded-xl px-4 py-2 text-gray-500 text-[15px] cursor-pointer hover:bg-gray-50 transition-colors" onclick="fillPrompt('Ayuda en la elaboración elegante del texto/revisión de un documento sin errores en el menor tiempo posible')">
+                        Ayuda en la elaboración elegante del texto/revisión de un documento sin errores en el menor tiempo posible
+                    </div>
+                    <div class="border border-gray-200 bg-[#F8FAFC] rounded-xl px-4 py-2 text-gray-500 text-[15px] w-2/3 cursor-pointer hover:bg-gray-50 transition-colors" onclick="fillPrompt('Crear un presupuesto estimado para freelancer')">
+                        Crear un presupuesto estimado para freelancer
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign-in Modal -->
+    <div id="signInModal" class="fixed inset-0 bg-black bg-opacity-30 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-2 shadow-xl transition-all relative">
+            <!-- Close button (X) -->
+            <button id="closeSignInModalBtn" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 text-2xl font-bold bg-transparent border-none focus:outline-none" aria-label="Cerrar modal">&times;</button>
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">Crea tu cuenta</h2>
+            
+            <!-- Google Login Button -->
+            <button
+                id="modalLoginBtn"
+                class="flex items-center justify-center w-full border border-gray-200 rounded-md px-4 py-3 text-gray-700 bg-white hover:bg-gray-50 text-base font-medium focus:outline-none transition mb-8"
+            >
+                <svg class="w-6 h-6 mr-2" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                <span>Google</span>
+            </button>
+            
+            <!-- Separator -->
+            <div class="relative mb-8">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-200"></div>
+                </div>
+                <div class="relative flex justify-center text-base">
+                    <span class="px-3 bg-white text-gray-400"> </span>
+                </div>
+            </div>
+
+            <!-- Email & Password Login (visual only, not functional here) -->
+            <form id="signInForm" class="space-y-4">
+                <input
+                    type="email"
+                    id="signInEmail"
+                    placeholder="Correo electrónico"
+                    class="w-full px-4 py-4 border border-gray-200 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+                />
+                <input
+                    type="password"
+                    id="signInPassword"
+                    placeholder="Contraseña"
+                    class="w-full px-4 py-4 border border-gray-200 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+                />
+                <button
+                    id="signInBtn"
+                    type="submit"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold py-3 rounded-lg shadow-sm transition"
+                >
+                    Empezar
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <span class="text-gray-400 text-sm">¿No tienes cuenta?</span>
+                <button
+                    id="showSignUpModalBtn"
+                    class="text-blue-600 hover:underline text-sm font-medium ml-1 bg-transparent border-0 p-0"
+                >
+                    Crear cuenta
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign-up Modal -->
+    <div id="signUpModal" class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-xl p-8 max-w-md mx-4 shadow-xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold text-gray-800">Crea tu cuenta</h2>
+                <button id="closeSignUpModalBtn" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Google Sign-up Button -->
+            <button
+                id="googleSignUpBtn"
+                class="w-full bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-700 px-6 py-3 rounded-lg font-medium text-sm transition-colors flex items-center justify-center space-x-3 mb-6"
+            >
+                <svg class="w-5 h-5" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                <span>Google</span>
+            </button>
+            
+            <!-- Separator -->
+            <div class="relative mb-6">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-200"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-white text-gray-500">o</span>
+                </div>
+            </div>
+            
+            <!-- Email and Password Form -->
+            <form id="signUpForm" class="space-y-4">
+                <div>
+                    <input
+                        type="email"
+                        id="signUpEmail"
+                        placeholder="Correo electrónico"
+                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50"
+                        required
+                    />
+                </div>
+                <div>
+                    <input
+                        type="password"
+                        id="signUpPassword"
+                        placeholder="Contraseña"
+                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50"
+                        required
+                    />
+                </div>
+                
+                <!-- Primary Button -->
+                <button
+                    type="submit"
+                    id="signUpSubmitBtn"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium text-sm transition-colors"
+                >
+                    Empezar
+                </button>
+            </form>
+            
+            <!-- Error Message -->
+            <div id="signUpError" class="mt-4 text-red-600 text-sm text-center hidden"></div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is authenticated
+        const isAuthenticated = {{ 'true' if user else 'false' }};
+        
+        // Handle modal login button click
+        document.getElementById('modalLoginBtn')?.addEventListener('click', function() {
+            window.location.href = '/auth/google';
+        });
+
+        // Handle close modal button
+        document.getElementById('closeModalBtn')?.addEventListener('click', function() {
+            document.getElementById('signInModal').classList.add('hidden');
+        });
+
+        // Handle show sign-up modal button
+        document.getElementById('showSignUpModalBtn')?.addEventListener('click', function() {
+            document.getElementById('signInModal').classList.add('hidden');
+            document.getElementById('signUpModal').classList.remove('hidden');
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('signInModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.add('hidden');
+            }
+        });
+
+        // Handle close sign-up modal button
+        document.getElementById('closeSignUpModalBtn')?.addEventListener('click', function() {
+            document.getElementById('signUpModal').classList.add('hidden');
+        });
+
+        // Close sign-up modal when clicking outside
+        document.getElementById('signUpModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.add('hidden');
+            }
+        });
+
+        // Handle Google sign-up button
+        document.getElementById('googleSignUpBtn')?.addEventListener('click', function() {
+            window.location.href = '/auth/google';
+        });
+
+        // Handle sign-up form submission
+        document.getElementById('signUpForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('signUpEmail').value;
+            const password = document.getElementById('signUpPassword').value;
+            const submitBtn = document.getElementById('signUpSubmitBtn');
+            const errorDiv = document.getElementById('signUpError');
+            
+            // Clear previous errors
+            errorDiv.classList.add('hidden');
+            errorDiv.textContent = '';
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creando cuenta...';
+            
+            try {
+                const response = await fetch('/auth/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        email: email, 
+                        password: password 
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Close modal and reload page to show authenticated state
+                    document.getElementById('signUpModal').classList.add('hidden');
+                    window.location.reload();
+                } else {
+                    errorDiv.textContent = data.error || 'Error al crear la cuenta';
+                    errorDiv.classList.remove('hidden');
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Error de conexión. Intenta nuevamente.';
+                errorDiv.classList.remove('hidden');
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Empezar';
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('agentForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const prompt = document.getElementById('agentPrompt').value;
+            const generateBtn = document.getElementById('generateBtn');
+            
+            // Check if user is authenticated
+            if (!isAuthenticated) {
+                // Show sign-in modal for unauthenticated users
+                document.getElementById('signInModal').classList.remove('hidden');
+                return;
+            }
+            
+            // Show loading state
+            generateBtn.disabled = true;
+            generateBtn.textContent = 'Generando...';
+            
+            try {
+                const response = await fetch('/generate-agent', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt: prompt })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Redirect to chat with the prompt as initial message
+                    const encodedMessage = encodeURIComponent(prompt);
+                    window.location.href = `/chat?message=${encodedMessage}`;
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                alert('Error al generar el agente: ' + error.message);
+            } finally {
+                // Reset button state
+                generateBtn.disabled = false;
+                generateBtn.textContent = 'Generar Agente';
+            }
+        });
+
+        // Fill prompt with example text
+        function fillPrompt(text) {
+            const textarea = document.getElementById('agentPrompt');
+            if (textarea) {
+                textarea.value = text;
+                textarea.focus();
+            }
+        }
+
+        // Function to open login modal (used by sidebar tooltips)
+        function openLoginModal() {
+            document.getElementById('signInModal').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
